@@ -24,4 +24,48 @@ def formatCSV(file):
 
     return df
 
+# Function to preprocess the text
+def preprocess_text(text):
+   # Handle non-string values
+   if not isinstance(text, str):
+       return ""
+  
+   # Remove URLs
+   text = re.sub(r'http\S+|www\S+|https\S+', '', text, flags=re.MULTILINE)
 
+
+   # Remove special characters, numbers, and punctuation
+   text = re.sub(r'\W', ' ', text)
+
+
+   # Remove extra spaces
+   text = re.sub(r'\s+', ' ', text)
+
+
+   # Convert to lowercase
+   text = text.lower()
+
+
+   # Tokenize the text
+   tokens = nltk.word_tokenize(text)
+
+
+   # Remove stop words
+   stop_words = set(stopwords.words('english'))
+
+
+   tokens = [word for word in tokens if word not in stop_words]
+
+
+   # Lemmatize the tokens
+   lemmatizer = WordNetLemmatizer()
+
+
+   tokens = [lemmatizer.lemmatize(word) for word in tokens]
+
+
+   # Join the tokens back into a single string
+   text = ' '.join(tokens)
+
+
+   return text
