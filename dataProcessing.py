@@ -69,3 +69,36 @@ def preprocess_text(text):
 
 
    return text
+
+# Grab the formated dataframes
+training = formatCSV("twitter_training.csv")
+
+
+validation = formatCSV("twitter_validation.csv")
+
+
+# Apply the preprocessing function to the text column
+training['preprocessed_text'] = training['text'].apply(preprocess_text)
+
+
+validation['preprocessed_text'] = validation['text'].apply(preprocess_text)
+
+
+# Preprocessing text data
+train_preprocessed_text = training['preprocessed_text']
+
+
+val_preprocessed_text = validation['preprocessed_text']
+
+
+# Create a TfidfVectorizer instance
+vectorizer = TfidfVectorizer()
+
+
+# Fit the vectorizer to the training data
+vectorizer.fit(train_preprocessed_text)
+
+
+# Transform the training and validation data using the fitted vectorizer
+train_tfidf_matrix = vectorizer.transform(train_preprocessed_text)
+val_tfidf_matrix = vectorizer.transform(val_preprocessed_text)
