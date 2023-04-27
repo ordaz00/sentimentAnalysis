@@ -1,5 +1,4 @@
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
 import re
 import nltk
 from nltk.corpus import stopwords
@@ -90,15 +89,7 @@ train_preprocessed_text = training['preprocessed_text']
 
 val_preprocessed_text = validation['preprocessed_text']
 
+# Saving the dataframes to csv's
+training.to_csv('preprocessed_training.csv', index=False)
 
-# Create a TfidfVectorizer instance
-vectorizer = TfidfVectorizer()
-
-
-# Fit the vectorizer to the training data
-vectorizer.fit(train_preprocessed_text)
-
-
-# Transform the training and validation data using the fitted vectorizer
-train_tfidf_matrix = vectorizer.transform(train_preprocessed_text)
-val_tfidf_matrix = vectorizer.transform(val_preprocessed_text)
+validation.to_csv('preprocessed_validation.csv', index=False)
