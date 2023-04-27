@@ -10,16 +10,16 @@ def formatCSV(file):
     df = pd.read_csv(file, header=None)
 
     #add in column names
-    df.rename(columns={0: 'ids', 1: 'user', 2: 'target', 3: 'text'}, inplace=True)
+    df.rename(columns={0: 'ids', 1: 'user', 2: 'sentiment score', 3: 'text'}, inplace=True)
 
     #drop unecessary columns
     df = df.drop(columns=['ids','user'])
 
     #remove irrelevant rows
-    df.drop(df[df["target"] == "Irrelevant"].index, inplace=True)
+    df.drop(df[df["sentiment score"] == "Irrelevant"].index, inplace=True)
 
     #convert sentiment from string to numbers
-    df['target'] = df['target'].replace(["Negative", "Neutral", "Positive"], [0,1,2])
+    df['sentiment score'] = df['sentiment score'].replace(["Negative", "Neutral", "Positive"], [0,1,2])
 
     return df
 
@@ -77,17 +77,11 @@ validation = formatCSV("twitter_validation.csv")
 
 
 # Apply the preprocessing function to the text column
-training['preprocessed_text'] = training['text'].apply(preprocess_text)
+training['text'] = training['text'].apply(preprocess_text)
 
 
-validation['preprocessed_text'] = validation['text'].apply(preprocess_text)
+validation['text'] = validation['text'].apply(preprocess_text)
 
-
-# Preprocessing text data
-train_preprocessed_text = training['preprocessed_text']
-
-
-val_preprocessed_text = validation['preprocessed_text']
 
 # Saving the dataframes to csv's
 training.to_csv('preprocessed_training.csv', index=False)
